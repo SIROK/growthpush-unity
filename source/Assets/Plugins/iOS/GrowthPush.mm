@@ -16,7 +16,19 @@ NSString* NSStringFromCharString(const char* charString) {
 }
 
 extern "C" void growthPushSetApplicationId(int applicationID, const char* secret, int environment, bool debug) {
-    [EasyGrowthPush setApplicationId:applicationID secret:NSStringFromCharString(secret) environment:environment debug:debug option:EGPOptionNone];
+	GPEnvironment gpEnvironment = GPEnvironmentUnknown;
+    switch (environment) {
+        case GPEnvironmentDevelopment:
+            gpEnvironment = GPEnvironmentDevelopment;
+            break;
+            
+        case GPEnvironmentProduction:
+            gpEnvironment = GPEnvironmentProduction;
+            break;
+        default:
+            break;
+    }
+    [EasyGrowthPush setApplicationId:applicationID secret:NSStringFromCharString(secret) environment:gpEnvironment debug:debug option:EGPOptionNone];
 }
 
 extern "C" void growthPushTrackEvent(const char* name, const char* value) {
